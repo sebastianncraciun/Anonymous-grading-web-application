@@ -5,34 +5,33 @@ function Form_Send() {
     const [error, setError] = useState('');
 
 
+    const data = {  email: email, password: password,};
     function handleSubmit(event) {
         event.preventDefault();
 
         if (!email || !password) {
             setError('All 2 values are required');
         } else {
-            // Send a request to the server to verify the login credentials
-            // Do something with the username and password here
-            console.log(email,password);
-        }
-
-        fetch('/api/participants', {
+            fetch('http://localhost:8080/loginStudent', {
+            mode: 'no-cors',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-          })
+            body: JSON.stringify(data)
+            })
             .then(response => response.json())
             .then(data => {
-              // Handle the response here
-              // If the request is successful, you can clear the form inputs
-              setEmail('');
-              setPassword('');
+            // Handle the response here
+            // If the request is successful, you can clear the form inputs
+            setEmail('');
+            setPassword('');
             })
             .catch(error => {
-              // Handle the error here
-              console.error('Error:', error);
+            // Handle the error here
+            console.error('Error:', error);
             });
-    }    
+                console.log(data.email,data.password);
+        }
+    }
 
   return (
     <div className="login-container">
