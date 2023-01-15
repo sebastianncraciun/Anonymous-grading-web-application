@@ -41,6 +41,8 @@ let Team = sequelize.define('team',{
 
 const app = express()
 app.use(express.json())
+var cors = require('cors');
+app.use(cors({origin: 'http://localhost:3000'}));
 // TODO
 
 app.get('/create', async (req, res, next) => {
