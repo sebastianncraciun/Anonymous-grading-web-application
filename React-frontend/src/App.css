@@ -1,0 +1,49 @@
+body{
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+
+label{
+  color: #333;
+}
+
+button{
+  background-color: #4CAF50;
+  color: whitesmoke;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+form label, form input, form button{
+  margin: 0;
+  padding: 0;
+}
+
+.login-container{
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100vh;
+}
+
+.loginForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+}
+form label{
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+form input{
+  margin-left: 8px;
+}
+
+
+
