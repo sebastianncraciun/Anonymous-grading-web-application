@@ -4,6 +4,7 @@ function Form_Send() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const SERVER = 'http://localhost:8080'
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -16,21 +17,28 @@ function Form_Send() {
             console.log(email,password);
         }
     }    
+    const checkwithDB = async () =>{
+      let myEmail = document.getElementById('email').value;
+      let echipamea = document.getElementById('echipamea');
+      let lista = [];
+      const requestOptions = {method: 'GET'}
+      const response = await fetch(`${SERVER}/student/${myEmail}`, requestOptions)
+      .then(response => response.json())
+      .then(response => echipamea.innerHTML="Your team is: "+response.teamName);
+    }
+
 
   return (
     <div className="login-container">
           <form className="loginForm" onSubmit={handleSubmit}>
           <label className="form-label">
           <span>Email:</span>
-          <input className="form-input" type="email" name="email" value={email} onChange={event => setEmail(event.target.value)} required />
-          </label>       
+          <input className="form-input" id="email" type="email" name="email" value={email} onChange={event => setEmail(event.target.value)} required />
+          </label>    
           <br />
-          <label className="form-label">
-              <span>Password:</span>
-              <input className="form-input" type="password" name="password" value={password} onChange={event => setPassword(event.target.value)} required />
-          </label>
+          <button className="form-button" type="submit"  onClick={checkwithDB}>Verify Student</button>
           <br />
-          <button className="form-button" type="submit">Verify Student</button>
+          <div id="echipamea"></div>
         </form>
       </div>
     

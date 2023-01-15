@@ -7,8 +7,8 @@ import './App.css';
 function App() {
     return(
         <div className='container'>
-            {/* <LoginPage/>
-            <Form_Send/> */}
+            {/* <LoginPage/> */}
+            <Form_Send/>
             <StudentList/>
         </div>
     )

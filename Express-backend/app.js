@@ -136,7 +136,7 @@ app.get('/student/:email', async (req, res) => {
   try {
     // Find the student in the database
     const student = await Student.findOne({where: { email: req.params.email }});
-    if (student == null) {
+    if (!student) {
         return res.status(404).json({ message: 'Student not found' });
     }
     // Return the student's teamName attribute
