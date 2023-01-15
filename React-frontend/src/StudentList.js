@@ -19,7 +19,7 @@ function StudentList(){
         <div>
             <h4>Students</h4>
             {
-            students.map(e => <div key={e.id}>{e.name}</div>)
+            students.map(e => <div key={e.id}>{e.name} Team: {e.team}</div>)
             }
             <StudentAddForm onAdd={addStudent}/>
         </div>
