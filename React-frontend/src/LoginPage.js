@@ -3,20 +3,37 @@ import React, { useState } from 'react';
 function LoginPage() {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [teamname, setTeamName] = useState('');
+    const [team, setTeam] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    const data = { name: name, email: email, password: password, team: team};
     function handleSubmit(event) {
         event.preventDefault();
 
-        if (!email || !password || !name || !teamname) {
+        if (!email || !password || !name || !team) {
             setError('All 4 values are required');
         } else {
-            // Send a request to the server to verify the login credentials
-            // Do something with the username and password here
-            console.log(email, name, teamname, password);
-        }
+            fetch('http://localhost:8080/students', {
+            mode: 'no-cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+            // Handle the response here
+            // If the request is successful, you can clear the form inputs
+            setEmail('');
+            setName('');
+            setTeam('');
+            setPassword('');
+            })
+            .catch(error => {
+            // Handle the error here
+            console.error('Error:', error);
+            });
+                console.log(email, name, team, password);
+            }
     }
 
     return (
@@ -34,7 +51,7 @@ function LoginPage() {
           <br />
           <label className="form-label">
               <span>Teamname:</span>
-              <input className="form-input" type="text" name="teamname" value={teamname} onChange={event => setTeamName(event.target.value)} required />
+              <input className="form-input" type="text" name="team" value={team} onChange={event => setTeam(event.target.value)} required />
           </label>
           <br />
           <label className="form-label">
