@@ -32,8 +32,8 @@ function LoginPage() {
             // Handle the error here
             console.error('Error:', error);
             });
-                console.log(email, name, team, password);
-            }
+                console.log(data.email, data.name, data.team, data.password);
+        }
     }
 
     return (
