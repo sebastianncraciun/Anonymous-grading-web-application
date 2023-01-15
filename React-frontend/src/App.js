@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import LoginPage from './LoginPage';
 import Form_Send from './Send_Form/Form_Send';
 import StudentList from './StudentList';
+import './App.css';
 
 function App() {
     return(
-        <div>
-            <LoginPage/>
+        <div className='container'>
+            {/* <LoginPage/> */}
             <Form_Send/>
             <StudentList/>
         </div>
