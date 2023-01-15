@@ -8,18 +8,6 @@ const sequelize = new Sequelize({
         timestamps: false
     }
 })
-
-let FoodItem = sequelize.define('foodItem', {
-    name : Sequelize.STRING,
-    category : {
-        type: Sequelize.STRING,
-        validate: {
-            len: [3, 10]
-        },
-        allowNull: false
-    },
-    calories : Sequelize.INTEGER
-})
  
 let Student = sequelize.define('student', {
     name : {
@@ -53,45 +41,6 @@ app.get('/create', async (req, res, next) => {
       next(err)
     }
   })
-
-app.get('/food-items', async (req, res) => {
-    try{
-        let foodItems = await FoodItem.findAll()
-        res.status(200).json(foodItems)
-    }
-    catch(err){
-        console.warn(err.stack)
-        res.status(500).json({message : 'server error'})        
-    }
-})
-
-app.post('/food-items', async (req, res) => {
-    try{
-        if (Object.keys(req.body).length===0) {
-            res.status(400).json({message: "body is missing"})
-        }
-        else{
-            if (req.body.name==null || req.body.category==null || req.body.calories==null)
-            {res.status(400).json({message : 'malformed request'})
-            }
-                else if (req.body.calories <= 0) {
-                    res.status(400).json({message: "calories should be a positive number"})
-                }
-                else if(req.body.category!="VEGETABLE" && req.body.category!="DAIRY" && req.body.category!="MEAT")
-                        {res.status(400).json({message: "not a valid category"})}
-                            else{
-                                const foodItem=new FoodItem(req.body)
-                                await foodItem.save();
-                                res.status(201).json({ message: 'created' })
-                                }
-            
-        }  
-    }    
-    catch(err){
-        console.warn(err.stack)
-        res.status(500).json({message : 'server error'})
-    }
-})
 
 /**
  * GET all the students from the database.
