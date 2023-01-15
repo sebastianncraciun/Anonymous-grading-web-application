@@ -3,7 +3,10 @@ const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: 'my.db'
+    storage: 'my.db',
+    define: {
+        timestamps: false
+    }
 })
 
 let FoodItem = sequelize.define('foodItem', {
@@ -16,33 +19,38 @@ let FoodItem = sequelize.define('foodItem', {
         allowNull: false
     },
     calories : Sequelize.INTEGER
-},{
-    timestamps : false
+})
+ 
+let Student = sequelize.define('student', {
+    name : {
+    type: Sequelize.STRING,
+    allowNull: false
+    },
+    email : Sequelize.STRING,
+    password : Sequelize.STRING,
+    team : Sequelize.STRING
 })
 
+let Team = sequelize.define('team',{
+    name : {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    linkProject: Sequelize.STRING
+})
 
 const app = express()
 app.use(express.json())
 // TODO
 
-app.get('/create', async (req, res) => {
-    try{
-        await sequelize.sync({force : true})
-        for (let i = 0; i < 10; i++){
-            let foodItem = new FoodItem({
-                name: 'name ' + i,
-                category: ['MEAT', 'DAIRY', 'VEGETABLE'][Math.floor(Math.random() * 3)],
-                calories : 30 + i
-            })
-            await foodItem.save()
-        }
-        res.status(201).json({message : 'created'})
+app.get('/create', async (req, res, next) => {
+    try {
+      await sequelize.sync({ force: true })
+      res.status(201).json({ message: 'Database created with the models.' })
+    } catch (err) {
+      next(err)
     }
-    catch(err){
-        console.warn(err.stack)
-        res.status(500).json({message : 'server error'})
-    }
-})
+  })
 
 app.get('/food-items', async (req, res) => {
     try{
@@ -82,5 +90,72 @@ app.post('/food-items', async (req, res) => {
         res.status(500).json({message : 'server error'})
     }
 })
+
+/**
+ * GET all the students from the database.
+ */
+app.get('/students', async (req, res) => {
+    try{
+        let students = await Student.findAll()
+        res.status(200).json(students)
+    }
+    catch(err){
+        console.warn(err.stack)
+        res.status(500).json({message : 'server error'})        
+    }
+})
+
+/**
+ * POST a new student to the database.
+ */
+app.post('/students', async (req, res) => {
+    try{
+        if (Object.keys(req.body).length===0) {
+            res.status(400).json({message: "body is missing"})
+        }
+        else{
+            
+            const student = new Student(req.body)
+            await student.save()
+            res.status(201).json({ student })
+        }
+    }
+    catch(err){
+        console.warn(err.stack)
+        res.status(500).json({message : 'server error'})
+    }
+})
+
+/**
+ * GET all the teams from the database.
+ */
+app.get('/teams', async (req, res, next) => {
+    try {
+      const teams = await Team.findAll()
+      res.status(200).json(teams)
+    } catch (err) {
+      next(err)
+    }
+  })
+
+  /**
+ * GET a specific team from the database based on its name.
+ */
+app.get('/teams/:name', async (req, res) => {
+    try {
+      const team = await Team.findOne({
+        where: {
+          name: req.params.name
+        }
+      });
+      if (!team) {
+        res.status(404).send({ message: 'Team not found' });
+      } else {
+        res.status(200).send(team);
+      }
+    } catch (error) {
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  });
 
 module.exports = app
