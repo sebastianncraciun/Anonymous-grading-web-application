@@ -126,6 +126,26 @@ app.post('/students', async (req, res) => {
     }
 })
 
+
+/**
+ * GET a specific student from the database based on its email and password and return its teamName.
+ */
+app.post('/loginStudent', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      // Find the student in the database
+      const student = await Student.findOne({ email: email, password: password });
+      if (!student) {
+          return res.status(404).json({ message: 'Student not found' });
+      }
+      // Return the student's teamName attribute
+      res.json({ team: student.team });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
 /**
  * GET all the teams from the database.
  */
@@ -138,7 +158,7 @@ app.get('/teams', async (req, res, next) => {
     }
   })
 
-  /**
+/**
  * GET a specific team from the database based on its name.
  */
 app.get('/teams/:name', async (req, res) => {
