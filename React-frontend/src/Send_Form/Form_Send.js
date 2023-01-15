@@ -15,6 +15,23 @@ function Form_Send() {
             // Do something with the username and password here
             console.log(email,password);
         }
+
+        fetch('/api/participants', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          })
+            .then(response => response.json())
+            .then(data => {
+              // Handle the response here
+              // If the request is successful, you can clear the form inputs
+              setEmail('');
+              setPassword('');
+            })
+            .catch(error => {
+              // Handle the error here
+              console.error('Error:', error);
+            });
     }    
 
   return (
@@ -32,9 +49,15 @@ function Form_Send() {
           <br />
           <button className="form-button" type="submit">Verify Student</button>
         </form>
+
+        
       </div>
     
   );
 }
 
 export default Form_Send;
+
+
+
+
