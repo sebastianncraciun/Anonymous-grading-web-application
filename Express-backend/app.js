@@ -23,7 +23,7 @@ let FoodItem = sequelize.define('foodItem', {
  
 let Student = sequelize.define('student', {
     name : {
-    type: DataTypes.STRING,
+    type: Sequelize.STRING,
     allowNull: false
     },
     email : Sequelize.STRING,
@@ -33,7 +33,7 @@ let Student = sequelize.define('student', {
 
 let Team = sequelize.define('team',{
     name : {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false
     },
     linkProject: Sequelize.STRING
@@ -141,7 +141,7 @@ app.get('/teams', async (req, res, next) => {
   /**
  * GET a specific team from the database based on its name.
  */
-  router.get('/teams/:name', async (req, res) => {
+app.get('/teams/:name', async (req, res) => {
     try {
       const team = await Team.findOne({
         where: {
